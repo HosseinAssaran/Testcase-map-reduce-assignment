@@ -3,3 +3,7 @@
 
 *  https://doc.rust-lang.org/rust-by-example/std_misc/threads/testcase_mapreduce.html
 
+This program is written with rust and you can run it with command below:
+
+`cargo run`
+
