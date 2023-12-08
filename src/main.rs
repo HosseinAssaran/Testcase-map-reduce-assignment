@@ -1,4 +1,5 @@
 use std::thread;
+const THEARD_LIMIT: usize = 5;
 
 // This is the `main` thread
 fn main() {
@@ -28,14 +29,18 @@ fn main() {
 
     // split our data into segments for individual calculation
     // each chunk will be a reference (&str) into the actual data
-    let chunked_data = data.split_whitespace();
+    let chunked_data: Vec<&str> = data.split_whitespace().collect();
+    let chunk_size = (chunked_data.len() + THEARD_LIMIT - 1) / THEARD_LIMIT;
+    let chunks: Vec<String> = chunked_data.chunks(chunk_size).map(|chunk| chunk.join("")).collect();
+    //println!("{:?}", chunks);
 
     // Iterate over the data segments.
     // .enumerate() adds the current loop index to whatever is iterated
     // the resulting tuple "(index, element)" is then immediately
     // "destructured" into two variables, "i" and "data_segment" with a
     // "destructuring assignment"
-    for (i, data_segment) in chunked_data.enumerate() {
+    let mut i = 0;
+    for data_segment in chunks {
         println!("data segment {} is \"{}\"", i, data_segment);
 
         // Process each data segment in a separate thread
@@ -70,6 +75,7 @@ fn main() {
             result
 
         }));
+        i += 1;
     }
 
 
