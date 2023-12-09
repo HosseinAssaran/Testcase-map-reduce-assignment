@@ -31,7 +31,7 @@ fn main() {
     // each chunk will be a reference (&str) into the actual data
     let chunked_data: Vec<&str> = data.split_whitespace().collect();
     let chunk_size = (chunked_data.len() + THEARD_LIMIT - 1) / THEARD_LIMIT;
-    let chunks: Vec<String> = chunked_data.chunks(chunk_size).map(|chunk| chunk.join("")).collect();
+    let chunks = chunked_data.chunks(chunk_size).map(|chunk| chunk.join(""));
     //println!("{:?}", chunks);
 
     // Iterate over the data segments.
@@ -39,8 +39,7 @@ fn main() {
     // the resulting tuple "(index, element)" is then immediately
     // "destructured" into two variables, "i" and "data_segment" with a
     // "destructuring assignment"
-    let mut i = 0;
-    for data_segment in chunks {
+    for (i, data_segment) in chunks.enumerate() {
         println!("data segment {} is \"{}\"", i, data_segment);
 
         // Process each data segment in a separate thread
@@ -75,7 +74,6 @@ fn main() {
             result
 
         }));
-        i += 1;
     }
 
 
