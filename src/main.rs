@@ -30,9 +30,11 @@ fn main() {
     // split our data into segments for individual calculation
     // each chunk will be a reference (&str) into the actual data
     let chunked_data: Vec<&str> = data.split_whitespace().collect();
+    //Caculate the desired chunk size based on length of chunked_data and the number of allowed threads to use 
+    // The divide is round up divide.
     let chunk_size = (chunked_data.len() + THEARD_LIMIT - 1) / THEARD_LIMIT;
+    //Limit the number of chunks by joining them together
     let chunks = chunked_data.chunks(chunk_size).map(|chunk| chunk.join(""));
-    //println!("{:?}", chunks);
 
     // Iterate over the data segments.
     // .enumerate() adds the current loop index to whatever is iterated
